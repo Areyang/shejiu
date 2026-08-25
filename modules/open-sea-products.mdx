@@ -36,7 +36,7 @@ Not all products are equal. When the operations team marks a product as **priori
 **Why it matters:** High-value or time-sensitive items — such as a limited-edition launch or a high-commission SKU — benefit from guaranteed top-of-mind placement. The pinned badge signals to influencers that this product deserves priority attention, which typically drives faster claim rates.
 
 <Note>
-  The pinned badge is display-only from the influencer's perspective. As a manager, you control which products receive `handlePriorityPinned = 1` status through the product edit flow. When you flatten the brand-grouped data for export or downstream processing, ensure your data pipeline preserves this field — it is carried through the flatten operation intentionally.
+  The pinned badge is display-only from the influencer's perspective. As a manager, you control which products receive priority-pinned status through the product edit flow.
 </Note>
 
 ## Refreshing the Product List
@@ -51,13 +51,13 @@ Remaining refreshes ≈ ceil(remaining_brands_today / 30)
 
 **Example:** If 62 brands still have unreleased products queued for today, the tooltip shows approximately **3 refreshes remaining** (⌈62 ÷ 30⌉ = 3).
 
-This estimate helps you pace your refresh usage — refreshes are rate-limited to prevent excessive load on the ADB MySQL backend. If you burn through your estimate early in the day, wait for the next scheduled batch release before refreshing again.
+This estimate helps you pace your refresh usage — refreshes are rate-limited to ensure consistent performance. If you exhaust your daily estimate early, wait for the next scheduled batch release before refreshing again.
 
 ## Trend Charts
 
 Each product row in the list embeds an **ECharts line chart** showing that product's performance trend over recent periods — typically tracking metrics such as claim velocity or GMV contribution over time. These charts give you an at-a-glance read on whether a product is gaining or losing momentum in the pool.
 
-**Stability across expand/collapse:** Earlier versions of the module had an issue where ECharts containers were destroyed and re-created when you expanded or collapsed brand sub-rows, causing charts to disappear. This has been resolved: the layout now calls `initAllCharts` and `initSubCharts` after the layout stabilises, so charts remain fully rendered regardless of whether you expand or collapse rows. You can freely toggle brand groups open and closed without losing any chart data.
+**Stability across expand/collapse:** Earlier versions of the module had an issue where chart containers were destroyed and re-created when you expanded or collapsed brand sub-rows, causing charts to disappear. This has been resolved: charts are now re-initialised after the layout stabilises, so they remain fully rendered regardless of whether you expand or collapse rows. You can freely toggle brand groups open and closed without losing any chart data.
 
 <Tip>
   If you notice a chart appearing blank after a particularly rapid sequence of expand/collapse actions, trigger the manual refresh once to force a full chart re-initialisation.
@@ -72,6 +72,4 @@ The toolbar includes a **platform filter** that lets you narrow the product list
 
 This distinction matters: switching to "All" after a per-platform filter will restore the original server-ordered view, not a client-sorted one.
 
-<Note>
-  Shejiu's backend uses **ADB MySQL columnar storage**. When writing custom queries or reporting scripts against the product tables, avoid compound indexes and correlated subqueries — these are not supported and will return **error code 9001**. Use simple equality filters and join-free aggregations wherever possible, or contact your administrator to have complex queries rewritten for columnar compatibility.
-</Note>
+

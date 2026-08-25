@@ -1,7 +1,7 @@
 ---
-title: "Shejiu: Influencer E-Commerce Management Platform"
+title: "Shejiu: All-in-One Influencer E-Commerce Management"
 sidebarTitle: "Introduction"
-description: "Shejiu is the all-in-one backend management platform for the Baiying influencer e-commerce ecosystem. Manage products, selections, operations, finances, and more."
+description: "Shejiu centralises Baiying influencer e-commerce management: products, selection libraries, operations, financials, and red packet distribution."
 ---
 
 Welcome to **Shejiu** — the central backend management platform for the Baiying influencer e-commerce ecosystem. Whether you're curating products from the open sea, building selection libraries for your influencer campaigns, tracking operational performance, reconciling financial statements, or distributing red packets to your audience, Shejiu gives you a single, unified workspace to do it all. Use the navigation cards below to jump straight into the area you need, or read on for a guided overview of every module.
@@ -33,13 +33,9 @@ Shejiu is organized into focused modules so you can find exactly what you need w
     Drill into transaction-level financial data, view 7-day rolling averages, reconcile settlement records, and export reports for accounting review.
   </Card>
   <Card title="Captcha Automation" icon="shield-halved" href="/technical/captcha-automation">
-    Understand how Shejiu handles automated captcha resolution using CDP browser control and the Qwen3.7 Plus vision model — keeping workflows uninterrupted.
+    Understand how Shejiu handles automated captcha resolution using browser control and AI-powered image recognition — keeping workflows uninterrupted.
   </Card>
   <Card title="Tech Stack" icon="server" href="/technical/tech-stack">
-    Explore the architecture behind Shejiu: Spring Boot services, MyBatis data access, Vue 2 frontend, ECharts visualizations, and ADB MySQL columnar storage.
+    A detailed look at the technologies powering Shejiu — from the backend services and data layer to the frontend UI and charting library.
   </Card>
 </CardGroup>
-
-<Note>
-  Shejiu is built on a **Java Spring Boot** backend (MyBatis + Maven) paired with a **Vue 2** (Options API) frontend powered by Element UI and ECharts for data visualization. All persistent data is stored in **ADB MySQL columnar storage**, which delivers fast analytical reads across large datasets. Be aware that ADB MySQL does not support triggers, stored procedures, composite indexes, correlated sub-queries, or CTEs — keep these constraints in mind when extending the platform or writing custom queries.
-</Note>

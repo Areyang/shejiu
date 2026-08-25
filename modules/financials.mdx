@@ -13,7 +13,7 @@ The **Financials** module (财务详情) provides multi-dimensional revenue repo
     The **Company view** shows aggregate financial performance at the organisational level. Use it to track total GMV, blended order counts, and overall performance scores across all influencers and campaigns for a selected date range. This view is the starting point for executive-level reporting and period-over-period comparisons.
   </Tab>
   <Tab title="Influencer">
-    The **Influencer view** (Fluencer) breaks down financial performance by individual creator. You can compare revenue contribution, order volume, and performance scores across your entire roster, or drill into a single influencer's trend using the date range selector. This view is essential for commission calculations, creator tier reviews, and identifying your top and bottom performers.
+    The **Influencer view** breaks down financial performance by individual creator. You can compare revenue contribution, order volume, and performance scores across your entire roster, or drill into a single influencer's trend using the date range selector. This view is essential for commission calculations, creator tier reviews, and identifying your top and bottom performers.
   </Tab>
   <Tab title="Selector">
     The **Selector view** attributes financial results to the product selectors responsible for sourcing items into campaigns. Use it to evaluate which selectors are driving the most revenue and orders, and to allocate resources or incentives accordingly.
@@ -40,7 +40,7 @@ All financial average metrics across every view use a **7-day rolling window**. 
 </CardGroup>
 
 <Note>
-  The Financials module was previously configured to display 5-day averages. All four financial views (financialDetails, Company, Fluencer, Selector) were updated to the 7-day window simultaneously. If you reference historical reports or exports, factor in this change when comparing older figures against current averages.
+  The Financials module was previously configured to display 5-day averages. All four financial views (Company, Influencer, Selector, and the Overview) were updated to the 7-day window simultaneously. If you reference historical reports or exports, factor in this change when comparing older figures against current averages.
 </Note>
 
 ## Date Range Selection
@@ -66,8 +66,4 @@ All four financial views respond to a shared **date range selector** in the tool
 
 Each financial view includes an **Export** button that generates a spreadsheet of the currently filtered and date-scoped data. Exports include all visible columns — including the 7-day average metrics — in CSV format, suitable for import into Excel or Google Sheets for further analysis.
 
-When exporting large date ranges or high-volume creator rosters, allow a few seconds for the system to compile the dataset before the download begins. Extremely large exports (e.g. a full year across hundreds of influencers) may take longer due to the volume of data retrieved from the columnar storage layer.
-
-<Warning>
-  Shejiu's backend uses **ADB MySQL columnar storage**, which does not support CTEs (Common Table Expressions) or stored procedures. Custom SQL reports or integrations that rely on `WITH` clauses or `CALL` statements will fail against the Shejiu database. If you encounter query errors when building custom reports or connecting BI tools, contact your system administrator to have the queries rewritten in a columnar-compatible form.
-</Warning>
+When exporting large date ranges or high-volume creator rosters, allow a few seconds for the system to compile the dataset before the download begins. Extremely large exports (e.g. a full year across hundreds of influencers) may take longer due to the volume of data being processed.

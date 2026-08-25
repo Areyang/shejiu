@@ -35,6 +35,12 @@ flowchart TD
 
 The solver connects to Chrome instances using a fixed port-mapping scheme. You configure the base ports once; the solver derives the final port from the `browser_index` at runtime.
 
+| Browser type | Port formula |
+|---|---|
+| Baiying browser | `9340 + browser_index` |
+| Taobao browser | `9335` (fixed) |
+| Local proxy bridge | `9801 + browser_index` |
+
 ```python captcha_config.py
 # Baiying browser: base port 9340 + browser_index
 # Taobao browser:  fixed port 9335

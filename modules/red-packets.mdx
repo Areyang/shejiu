@@ -36,16 +36,9 @@ description: "Use Shejiu Red Packets to create monetary incentive campaigns, con
 
 ## Red Packet List
 
-Click the red packets counter in any influencer row to open the **Red Packet List drawer**. The drawer slides in from the **right side of the screen** (implemented as an `el-drawer`), keeping the underlying table visible on the left for context.
+Click the red packets counter in any influencer row to open the **Red Packet List drawer**. The drawer slides in from the right side of the screen, keeping the underlying table visible on the left for context.
 
-The list uses standardised row dimensions for visual consistency:
-
-| Row type | Height |
-|---|---|
-| Header row | 44 px |
-| Data rows | 96 px |
-
-The fixed 96 px data row height accommodates all possible content combinations — including multi-line countdown timers and status indicators — without causing rows to collapse or expand inconsistently. Each data row contains five columns:
+The list uses standardised row heights for visual consistency — header and data rows are fixed at uniform heights to accommodate all possible content combinations, including multi-line countdown timers and status indicators, without rows collapsing or expanding inconsistently. Each data row contains five columns:
 
 <CardGroup cols={2}>
   <Card title="Name & Description" icon="file-lines">
@@ -62,7 +55,7 @@ The fixed 96 px data row height accommodates all possible content combinations �
   </Card>
 </CardGroup>
 
-Action buttons (edit, pause, view details) are aligned within the 96 px row height on the rightmost column, ensuring they remain consistently reachable regardless of the content in the other cells.
+Action buttons (edit, pause, view details) are aligned in the rightmost column, ensuring they remain consistently reachable regardless of the content in the other cells.
 
 ## Tracking Progress
 
