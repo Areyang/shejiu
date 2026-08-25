@@ -1,0 +1,75 @@
+---
+title: "Development Conventions and Workflow Standards"
+sidebarTitle: "Conventions"
+description: "Learn the Shejiu development conventions: task sizing, diff-first workflow, local validation, and ADB MySQL columnar constraints to follow before merging."
+---
+
+Shejiu follows a set of team conventions that keep the codebase maintainable and deployments safe. Whether you are fixing a small UI bug or designing a new module, applying these standards consistently reduces review friction and prevents production incidents. This page covers the workflow standards every contributor should follow.
+
+## Task Sizing
+
+Before you write a single line of code, classify the work so you invest the right amount of upfront planning.
+
+<Steps>
+  <Step title="Micro Tasks — Implement Directly">
+    Small, well-understood changes (for example, a CSS tweak or a copy fix) can be implemented immediately without prior discussion. Keep the scope narrow and the diff clean.
+  </Step>
+  <Step title="Medium Tasks — Clarify Scope First">
+    Changes that touch multiple components or affect shared logic require you to clarify the scope and boundaries with the team before you start. Agree on what is in-scope and what is explicitly out-of-scope.
+  </Step>
+  <Step title="Large Tasks — Write a Technical Proposal">
+    Any work that introduces new architecture, changes a core data model, or affects multiple modules requires a written technical proposal. Get sign-off from the team before you begin implementation.
+  </Step>
+</Steps>
+
+## Diff-First Workflow
+
+Before making any code changes, generate a diff summary of the planned modifications and share it for review. Only proceed once the diff is confirmed by the team.
+
+This practice exposes unintended side effects early — before they become entangled in a larger changeset — and gives reviewers a clear picture of what will change and why. A brief description of the affected files and the nature of each modification is sufficient.
+
+<Note>
+  The diff summary does not need to be a formal document. A short bullet list of files and intended changes shared in the team channel is enough for most medium and micro tasks.
+</Note>
+
+## Local Validation
+
+You are responsible for verifying your changes locally before they go anywhere near a shared environment. Run through all three checks every time:
+
+1. **The code compiles without errors.** Resolve all build-time errors and warnings before moving on.
+2. **The application starts successfully.** Boot the local dev server and confirm there are no runtime startup errors.
+3. **The feature works as expected locally.** Walk through the affected user flow end-to-end in your local environment and confirm the behavior matches the intent.
+
+<Warning>
+  Never push directly to the test or production environment without local validation. Auto-deploy pipelines must not be triggered until all three local checks pass.
+</Warning>
+
+## ADB MySQL Constraints
+
+Shejiu's backend runs on ADB MySQL columnar storage, which has a different execution model from standard transactional MySQL. Several constructs that work in regular MySQL are unsupported in ADB MySQL and will cause queries to fail.
+
+<Warning>
+  The following are **not supported** in ADB MySQL columnar storage:
+
+  - `TRIGGER` — do not define database-level triggers
+  - `PROCEDURE` — do not define stored procedures
+  - **Compound indexes** — multi-column index definitions are not supported
+  - **Correlated subqueries** — subqueries that reference an outer query's columns will return **error code 9001**
+  - **CTEs (Common Table Expressions)** — `WITH` clauses are not supported
+
+  Any query that hits one of these limitations returns **error code 9001**. Refactor the query to use joins, derived tables, or application-side logic instead.
+</Warning>
+
+If you encounter a 9001 error during development, check your SQL for the patterns listed above before escalating. Most cases can be resolved by rewriting correlated subqueries as explicit joins or moving aggregation logic into the application layer.
+
+## Changelog Maintenance
+
+Every frontend change must be logged in the [Changelog](/development/changelog) immediately after merging. Each entry must include:
+
+- **Date** — the date the change was merged or deployed
+- **Module tag** — the feature area affected (for example, Red Packets, Operations Center, Financials)
+- **File paths** — the full relative paths of every file modified
+- **Description** — a concise explanation of what changed and why
+- **Verification steps** — how a reviewer or QA engineer can confirm the change is working correctly
+
+Keeping the changelog current ensures that any team member can trace when a behaviour changed, which files were involved, and how to verify the expected outcome without digging through commit history.

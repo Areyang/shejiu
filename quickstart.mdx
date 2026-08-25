@@ -1,47 +1,76 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Shejiu in Minutes"
+sidebarTitle: "Quickstart"
+description: "Learn how to access Shejiu, navigate the main modules, and perform your first operations in the Baiying e-commerce management platform."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+This guide walks you through everything you need to go from a blank browser tab to confidently working inside Shejiu. By the end, you'll have logged into the platform, oriented yourself within the top-level module layout, browsed the Open-Sea Product catalogue using filters, and pulled your first financial report. No prior experience with the system is required — just your login credentials from your administrator.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Access the Platform">
+    Open your preferred browser (Chrome or Edge recommended for full compatibility with Shejiu's Vue 2 frontend) and navigate to the Shejiu URL provided by your system administrator.
 
-    ```bash
-    npm install your-package
-    ```
+    You'll land on the login page. Enter your **username** and **password**, then click **Login**. If your organization uses a multi-factor step, complete that prompt before proceeding.
+
+    Once authenticated, you'll be taken directly to the platform dashboard — your central launchpad for all modules. If you see a blank screen or a permissions error, contact your admin to confirm your role and module access rights have been configured correctly.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+  <Step title="Explore the Main Modules">
+    Shejiu's top-level navigation is organized into five core modules, each accessible from the left sidebar or the main dashboard tiles:
 
-    ```bash
-    your-cli init
-    ```
+    - **Open-Sea Products** — The full catalogue of publicly available products you can assign to influencer promotions. Products here are sourced from the open pool shared across the Baiying ecosystem.
+    - **Selection Library** — Your workspace for assembling curated shortlists of products. Think of it as a staging area where you refine choices before pushing them into an active campaign.
+    - **Operations Center** — Live dashboards and operational controls for monitoring influencer campaign health, tracking key performance indicators, and taking action on underperforming listings.
+    - **Financials** — Detailed transaction records, settlement statements, and rolling average metrics. Use this module for reconciliation, reporting, and revenue analysis.
+    - **Red Packets** — Tools for configuring red packet reward pools, defining distribution rules, and tracking how recipients claim and redeem their incentives.
+
+    Take a moment to click through each section now. Familiarizing yourself with the top-level layout will make the rest of this guide much faster to follow.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+  <Step title="Browse Open-Sea Products">
+    Navigate to **Open-Sea Products** in the left sidebar. You'll see a paginated table listing all products currently available in the shared pool.
 
-    ```bash
-    your-cli start
-    ```
+    To narrow the list to what you care about, use the filter bar at the top of the table:
+
+    - **Platform filter** — Select one or more e-commerce platforms (e.g., Douyin, Taobao) to show only products sourced from those channels.
+    - **Brand filter** — Type a brand name or select from the dropdown to isolate products from a specific supplier or label.
+    - **Category filter** — Use the hierarchical category picker to drill into product verticals such as beauty, apparel, or home goods.
+
+    Once you've applied filters, look for the **Priority Pin** toggle on any product row. Pinning a product moves it to the top of every filtered view for your session, making it easier to reference high-priority items while you work. Click the pin icon again to unpin.
+
+    To view full product details — including pricing tiers, inventory status, and promotion eligibility — click anywhere on the product row to open the detail drawer on the right side of the screen.
+  </Step>
+  <Step title="Run Your First Report">
+    Navigate to **Financials** in the left sidebar. The Financials module opens on the summary view, which displays aggregated revenue and settlement data for the current period.
+
+    To generate a targeted report:
+
+    1. Locate the **Date Range** picker in the top-right corner of the page. Click it and choose a custom range, or select the **Last 7 Days** preset for a quick view of recent activity.
+    2. Click **Apply** to reload the table and charts with data scoped to your chosen window.
+    3. Scroll down to the **7-Day Average Metrics** panel. Here you'll see rolling averages for key figures including gross merchandise value (GMV), order count, average order value, and settlement amounts. These averages smooth out daily spikes and give you a reliable baseline for performance comparisons.
+    4. To export the current view, click the **Export** button (top-right, next to the date picker) and choose your preferred format. The downloaded file will reflect exactly the filters and date range currently active on screen.
+
+    Bookmark this page or pin the Financials module to your dashboard for quick daily access during reconciliation periods.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Continue Exploring
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+Now that you've completed your first walkthrough, dive deeper into the module that matters most for your role:
+
+<CardGroup cols={2}>
+  <Card title="Open-Sea Products" icon="box" href="/modules/open-sea-products">
+    Master advanced filtering, bulk assignment, and the priority pinning system to manage large product catalogues efficiently.
+  </Card>
+  <Card title="Selection Library" icon="magnifying-glass" href="/modules/selection-library">
+    Learn how to build, save, and deploy curated product selections for targeted influencer campaigns.
+  </Card>
+  <Card title="Operations Center" icon="chart-line" href="/modules/operations-center">
+    Set up live monitoring views, configure alert thresholds, and take bulk operational actions from a single dashboard.
+  </Card>
+  <Card title="Red Packets" icon="envelope" href="/modules/red-packets">
+    Configure reward pools, define eligibility rules, and track end-to-end redemption performance for your incentive campaigns.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Before making any changes to data or configurations in a shared environment, review your team's working conventions at [/development/conventions](/development/conventions). The conventions page covers task-sizing guidelines, the required diff-review step before editing code, and local validation rules — following them keeps the team aligned and prevents accidental changes from reaching production.
 </Tip>

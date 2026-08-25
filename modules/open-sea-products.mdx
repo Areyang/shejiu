@@ -1,0 +1,77 @@
+---
+title: "Open-Sea Products: Browse and Manage Your Product Pool"
+sidebarTitle: "Open-Sea Products"
+description: "Manage your open-sea product pool in Shejiu. Filter by brand and platform, pin priority products, view ECharts trend data, and refresh your product list."
+---
+
+The **Open-Sea Products** module (公海商品) is a shared product pool where influencers browse available items and claim them for promotion. Unlike private inventory, open-sea products are visible to all eligible influencers — making it a competitive, first-come-first-served environment for high-value SKUs. As a manager, you use this module to curate the pool, monitor claim activity, and surface priority products to ensure your top items get maximum exposure.
+
+## Viewing Products
+
+The product list organises every available SKU into a structured table grouped by **brand** and **batch round**. Each brand occupies a merged cell in the leftmost column, with its associated products listed in sub-rows beneath it. A **batch round** (品牌轮次) represents a discrete release window — the same brand can appear multiple times across different rounds as new stock is made available.
+
+Each product row surfaces key details at a glance:
+
+<CardGroup cols={2}>
+  <Card title="Product Identity" icon="tag">
+    SKU name, category, platform origin, and the brand it belongs to.
+  </Card>
+  <Card title="Campaign Metrics" icon="chart-line">
+    Current claim count, target claim quota, and embedded trend charts for performance history.
+  </Card>
+  <Card title="Batch Round" icon="layer-group">
+    The release round this product belongs to within its brand grouping.
+  </Card>
+  <Card title="Actions" icon="bolt">
+    Claim, pin, or inspect a product directly from the list row.
+  </Card>
+</CardGroup>
+
+Because products are grouped by brand, you can quickly assess an entire brand's portfolio in one scrollable block — no need to filter by brand just to see what is available.
+
+## Priority-Pinned Products
+
+Not all products are equal. When the operations team marks a product as **priority-pinned**, the system sets `handlePriorityPinned = 1` on that record. Shejiu renders a prominent red **"Pinned" (置顶)** badge inside the brand column cell for that product row, making it immediately visible to anyone browsing the pool.
+
+**Why it matters:** High-value or time-sensitive items — such as a limited-edition launch or a high-commission SKU — benefit from guaranteed top-of-mind placement. The pinned badge signals to influencers that this product deserves priority attention, which typically drives faster claim rates.
+
+<Note>
+  The pinned badge is display-only from the influencer's perspective. As a manager, you control which products receive `handlePriorityPinned = 1` status through the product edit flow. When you flatten the brand-grouped data for export or downstream processing, ensure your data pipeline preserves this field — it is carried through the flatten operation intentionally.
+</Note>
+
+## Refreshing the Product List
+
+The product pool updates as new batches are released by brands throughout the day. To fetch the latest available products without navigating away, use the **manual refresh button** in the toolbar.
+
+When you hover over the refresh button, Shejiu displays a tooltip estimating how many refreshes you have left for the current day. The estimate is calculated as:
+
+```
+Remaining refreshes ≈ ceil(remaining_brands_today / 30)
+```
+
+**Example:** If 62 brands still have unreleased products queued for today, the tooltip shows approximately **3 refreshes remaining** (⌈62 ÷ 30⌉ = 3).
+
+This estimate helps you pace your refresh usage — refreshes are rate-limited to prevent excessive load on the ADB MySQL backend. If you burn through your estimate early in the day, wait for the next scheduled batch release before refreshing again.
+
+## Trend Charts
+
+Each product row in the list embeds an **ECharts line chart** showing that product's performance trend over recent periods — typically tracking metrics such as claim velocity or GMV contribution over time. These charts give you an at-a-glance read on whether a product is gaining or losing momentum in the pool.
+
+**Stability across expand/collapse:** Earlier versions of the module had an issue where ECharts containers were destroyed and re-created when you expanded or collapsed brand sub-rows, causing charts to disappear. This has been resolved: the layout now calls `initAllCharts` and `initSubCharts` after the layout stabilises, so charts remain fully rendered regardless of whether you expand or collapse rows. You can freely toggle brand groups open and closed without losing any chart data.
+
+<Tip>
+  If you notice a chart appearing blank after a particularly rapid sequence of expand/collapse actions, trigger the manual refresh once to force a full chart re-initialisation.
+</Tip>
+
+## Platform Filter
+
+The toolbar includes a **platform filter** that lets you narrow the product list to a specific distribution platform (e.g. Douyin, Kuaishou, Taobao Live).
+
+- **"All" platforms (default):** When you select "All", Shejiu preserves the **server-side ordering** returned by the API. No client-side re-sorting by `brandId + brandRound` is applied. This ensures the list reflects the curated order your operations team has defined at the backend.
+- **Specific platform:** When you select a single platform, the list filters to show only products originating from that platform. The brand grouping and batch-round structure are maintained within the filtered result set.
+
+This distinction matters: switching to "All" after a per-platform filter will restore the original server-ordered view, not a client-sorted one.
+
+<Note>
+  Shejiu's backend uses **ADB MySQL columnar storage**. When writing custom queries or reporting scripts against the product tables, avoid compound indexes and correlated subqueries — these are not supported and will return **error code 9001**. Use simple equality filters and join-free aggregations wherever possible, or contact your administrator to have complex queries rewritten for columnar compatibility.
+</Note>

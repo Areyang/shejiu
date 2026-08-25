@@ -1,0 +1,101 @@
+---
+title: "Red Packets: Create and Distribute Incentive Campaigns"
+sidebarTitle: "Red Packets"
+description: "Use Shejiu Red Packets to create monetary incentive campaigns, configure distribution rules, manage influencer claim lists, and track redemption progress."
+---
+
+**Red Packets** (红包) in Shejiu are monetary incentive campaigns that you send directly to influencers. Each red packet campaign specifies a denomination (the value per packet), a quantity (how many packets are available), and a set of distribution rules that determine which influencers are eligible to claim. Once launched, influencers see the campaign in their interface and can claim a packet within the active window. You track claim progress in real time from the Red Packets management view.
+
+## Creating a Red Packet
+
+<Steps>
+  <Step title="Open the creation form">
+    Click **New Red Packet** (新建红包) in the Red Packets module toolbar. The "New Red Packet Settings" form dialog opens. The form is divided into four sections: denomination and quantity, basic information, distribution parameters, and automated task settings.
+  </Step>
+  <Step title="Set denomination and quantity">
+    In the **Denomination & Quantity** section, enter the value per individual red packet and the total number of packets to issue. The form calculates and displays the **total campaign value** (denomination × quantity) in real time so you can confirm the budget commitment before proceeding.
+  </Step>
+  <Step title="Fill in basic information">
+    In the **Basic Information** section, provide:
+    - **Campaign name** — a clear internal label that appears in the Red Packets list and in influencer-facing communications.
+    - **Description** — context about what the red packet is for (e.g. "August live-stream bonus", "New product launch incentive"). Keep this concise but informative, as influencers see this text when they claim.
+  </Step>
+  <Step title="Configure distribution parameters">
+    In the **Distribution Parameters** (投领参数) section, define the rules that govern who can claim a packet and how:
+    - **Claim rules** — set any conditions influencers must meet (e.g. minimum follower count, specific platform, campaign participation requirement).
+    - **Eligibility scope** — specify whether the campaign is open to your full roster or restricted to a named list of influencer Douyin IDs.
+    - **Claim limit per influencer** — typically one packet per influencer, but configurable if the campaign design allows multiple claims.
+  </Step>
+  <Step title="Configure automated task settings (optional)">
+    Toggle the **Automated Task** switch if you want the system to distribute packets automatically based on your configured rules — for example, auto-sending a packet to every influencer who completes a qualifying livestream. When the toggle is off, distribution is manual (you trigger sends from the list view). Configure trigger conditions and scheduling if the toggle is on.
+  </Step>
+  <Step title="Submit and launch">
+    Review all sections, then click **Submit**. The campaign is created and enters **Draft** status. To make it live and allow influencers to claim, change the status to **Active** from the Red Packets list. The campaign is now visible and claimable by eligible influencers within its active window.
+  </Step>
+</Steps>
+
+## Red Packet List
+
+Click the red packets counter in any influencer row to open the **Red Packet List drawer**. The drawer slides in from the **right side of the screen** (implemented as an `el-drawer`), keeping the underlying table visible on the left for context.
+
+The list uses standardised row dimensions for visual consistency:
+
+| Row type | Height |
+|---|---|
+| Header row | 44 px |
+| Data rows | 96 px |
+
+The fixed 96 px data row height accommodates all possible content combinations — including multi-line countdown timers and status indicators — without causing rows to collapse or expand inconsistently. Each data row contains five columns:
+
+<CardGroup cols={2}>
+  <Card title="Name & Description" icon="file-lines">
+    Campaign name and a truncated preview of the description. Hover to see the full description in a tooltip.
+  </Card>
+  <Card title="Denomination" icon="circle-dollar-to-slot">
+    The per-packet value displayed prominently, alongside the total quantity issued.
+  </Card>
+  <Card title="Status" icon="circle-check">
+    Current campaign status (Draft, Active, Completed, or Expired) with a colour-coded badge.
+  </Card>
+  <Card title="Progress Indicator" icon="chart-bar">
+    A visual progress bar plus a numeric "claimed / total" count showing real-time claim uptake.
+  </Card>
+</CardGroup>
+
+Action buttons (edit, pause, view details) are aligned within the 96 px row height on the rightmost column, ensuring they remain consistently reachable regardless of the content in the other cells.
+
+## Tracking Progress
+
+The **Progress** column in the Red Packet List provides a live view of campaign uptake. It shows the number of packets claimed versus the total issued (e.g. "24 / 50"), accompanied by a horizontal progress bar that fills as influencers claim.
+
+Campaign status transitions follow this lifecycle:
+
+```
+Draft → Active → Completed
+                ↘ Expired
+```
+
+| Status | Meaning |
+|---|---|
+| **Draft** | Campaign created but not yet live. Influencers cannot see or claim it. |
+| **Active** | Campaign is live. Eligible influencers can claim within the validity window. |
+| **Completed** | All packets have been claimed — the quota is exhausted. |
+| **Expired** | The campaign window closed before all packets were claimed. Remaining unclaimed packets are cancelled. |
+
+Monitor campaigns in Active status closely around the end of their validity window. A campaign approaching expiry with unclaimed packets may need its window extended or its eligibility criteria broadened — both actions are available from the campaign's edit form.
+
+## Automated Tasks
+
+When you enable the **Automated Task** toggle during campaign creation (or via the edit form for a Draft campaign), Shejiu takes over the distribution process. The automated task engine evaluates your configured trigger conditions — such as completing a qualifying action, reaching a performance threshold, or a scheduled time — and dispatches red packets to eligible influencers without manual intervention.
+
+**Benefits of automated distribution:**
+
+- **Speed:** Packets reach influencers immediately after they qualify, removing the delay of manual review.
+- **Scale:** You can run high-volume incentive campaigns (hundreds of influencers) without generating a corresponding operational workload.
+- **Consistency:** Every eligible influencer receives their packet under the same conditions, eliminating human error in eligibility decisions.
+
+You can disable the automated task at any time while a campaign is in Active status. After disabling, in-progress automation stops and any remaining distributions must be handled manually.
+
+<Note>
+  Red packet campaigns have a fixed validity window set at creation time. Influencers who do not claim their packet before the expiry time forfeit it — the system does not send reminders automatically. If you want to maximise claim rates, consider announcing the campaign via your influencer communication channels and clearly stating the deadline. You can view the exact expiry timestamp for any campaign by opening its detail panel from the Red Packets list.
+</Note>

@@ -1,0 +1,45 @@
+---
+title: "Shejiu: Influencer E-Commerce Management Platform"
+sidebarTitle: "Introduction"
+description: "Shejiu is the all-in-one backend management platform for the Baiying influencer e-commerce ecosystem. Manage products, selections, operations, finances, and more."
+---
+
+Welcome to **Shejiu** — the central backend management platform for the Baiying influencer e-commerce ecosystem. Whether you're curating products from the open sea, building selection libraries for your influencer campaigns, tracking operational performance, reconciling financial statements, or distributing red packets to your audience, Shejiu gives you a single, unified workspace to do it all. Use the navigation cards below to jump straight into the area you need, or read on for a guided overview of every module.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get up and running in minutes. Learn how to log in, navigate the interface, and complete your first operations.
+  </Card>
+  <Card title="Open-Sea Products" icon="box" href="/modules/open-sea-products">
+    Browse, filter, and manage the full catalogue of publicly available products eligible for influencer promotion.
+  </Card>
+  <Card title="Operations Center" icon="chart-line" href="/modules/operations-center">
+    Monitor live campaign metrics, track influencer performance, and act on real-time operational data.
+  </Card>
+  <Card title="Red Packets" icon="envelope" href="/modules/red-packets">
+    Configure and distribute red packet incentives to audiences, and track redemption rates end-to-end.
+  </Card>
+</CardGroup>
+
+## What's Inside
+
+Shejiu is organized into focused modules so you can find exactly what you need without navigating irrelevant screens. Here is a full map of everything the platform offers:
+
+<CardGroup cols={2}>
+  <Card title="Selection Library" icon="magnifying-glass" href="/modules/selection-library">
+    Build curated product shortlists tailored to specific influencers or campaigns. Save, compare, and push selections into active promotions with a single click.
+  </Card>
+  <Card title="Financials" icon="coins" href="/modules/financials">
+    Drill into transaction-level financial data, view 7-day rolling averages, reconcile settlement records, and export reports for accounting review.
+  </Card>
+  <Card title="Captcha Automation" icon="shield-halved" href="/technical/captcha-automation">
+    Understand how Shejiu handles automated captcha resolution using CDP browser control and the Qwen3.7 Plus vision model — keeping workflows uninterrupted.
+  </Card>
+  <Card title="Tech Stack" icon="server" href="/technical/tech-stack">
+    Explore the architecture behind Shejiu: Spring Boot services, MyBatis data access, Vue 2 frontend, ECharts visualizations, and ADB MySQL columnar storage.
+  </Card>
+</CardGroup>
+
+<Note>
+  Shejiu is built on a **Java Spring Boot** backend (MyBatis + Maven) paired with a **Vue 2** (Options API) frontend powered by Element UI and ECharts for data visualization. All persistent data is stored in **ADB MySQL columnar storage**, which delivers fast analytical reads across large datasets. Be aware that ADB MySQL does not support triggers, stored procedures, composite indexes, correlated sub-queries, or CTEs — keep these constraints in mind when extending the platform or writing custom queries.
+</Note>

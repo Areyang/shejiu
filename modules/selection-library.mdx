@@ -1,0 +1,86 @@
+---
+title: "Selection Library: Curate and Track Products for Campaigns"
+sidebarTitle: "Selection Library"
+description: "Use the Shejiu Selection Library to curate products, track countdown timers, review brand display rules, and approve or reject items for campaigns."
+---
+
+The **Selection Library** (选品库) is a curated staging pool where products are assembled before being pushed into live influencer campaigns. Unlike the open-sea pool — which is broadly accessible — the Selection Library is a controlled workspace: products here have been evaluated for fit, assigned to specific campaigns or creators, and are subject to **time-limited availability windows**. Once a product's window closes, it is no longer actionable until re-added by an operator.
+
+## Countdown Timers
+
+Every product in the Selection Library carries an availability window defined by two timestamps:
+
+| Field | Role |
+|---|---|
+| `lockTime` | The moment the product becomes locked / the window opens |
+| `expireTime` / `expiretime` | The moment the product expires and is no longer actionable |
+
+<Note>
+  The backend API may return the expiry field in either camelCase (`expireTime`) or all-lowercase (`expiretime`) depending on the endpoint version. Shejiu's frontend handles both spellings transparently — you do not need to do anything differently, but be aware of this when building integrations or custom queries against the API directly.
+</Note>
+
+**How the countdown display works:**
+
+- **Both `lockTime` and `expireTime` are present:** The system prioritises the end of the window and shows a live countdown to `expireTime`. This is the most common case — you see exactly how much time remains before the product expires.
+- **Only one timestamp is available:** The system falls back to the single available value and counts down to that moment. The label adjusts accordingly to avoid displaying a misleading "time remaining" when the full context is unknown.
+
+Use the countdown prominently displayed in each product card to prioritise your review queue. Products with less than 24 hours remaining should be actioned first.
+
+## Brand Display
+
+Brand names in the Selection Library follow a consistent display rule that accommodates products with Chinese-only, English-only, or bilingual branding:
+
+| Scenario | Display format |
+|---|---|
+| Only the **Chinese** brand name has a value | Chinese name displayed alone (e.g. "耐克") |
+| Only the **English** brand name has a value | English name displayed alone (e.g. "Nike") |
+| **Both** names are populated | English first, `/` separator, then Chinese (e.g. "Nike / 耐克") |
+
+This rule ensures that the brand column never shows empty cells or raw nulls, and that bilingual brands present a globally readable label by leading with the Latin-script name.
+
+<Tip>
+  When onboarding new brand partners, make sure both the Chinese and English name fields are populated in your product data to get the full bilingual display. A missing English name will fall back to Chinese-only, which may be less legible for international-facing campaigns.
+</Tip>
+
+## Reviewing Products
+
+The Selection Library includes a structured **review flow** where designated approvers accept or reject products before they advance to the campaign stage. The review action bar sits at the bottom of each product's detail panel and uses a `space-between` flex layout — the **Approve** button is anchored to the right edge, and any supplementary actions (such as "Return for Revision") sit on the left.
+
+**To approve or reject a product:**
+
+<Steps>
+  <Step title="Open the product detail panel">
+    Click on a product row in the Selection Library list. The detail panel slides open, showing the full product brief, pricing information, brand details, and the active countdown timer.
+  </Step>
+  <Step title="Review the product information">
+    Check that the product meets your campaign criteria: correct category, brand compliance, pricing within acceptable range, and no expired availability window.
+  </Step>
+  <Step title="Approve the product">
+    Click the **Approve (通过)** button in the bottom-right corner of the action bar. The product status updates to "Approved" and it becomes eligible for assignment to influencer campaigns.
+  </Step>
+  <Step title="Reject or return the product (if needed)">
+    If the product does not meet criteria, use the reject or "Return for Revision" action on the left side of the action bar. Add a rejection reason in the text field that appears — this note is visible to the submitter.
+  </Step>
+</Steps>
+
+<Note>
+  Once you approve a product, the action cannot be undone through the UI. If an approved product needs to be withdrawn from campaigns, contact your system administrator to update the status at the database level.
+</Note>
+
+## Filtering and Search
+
+The Selection Library toolbar provides several filters to help you focus your review queue:
+
+<CardGroup cols={3}>
+  <Card title="Platform Filter" icon="filter">
+    Filter products by their target distribution platform (e.g. Douyin, Kuaishou, Taobao Live). Useful when you manage campaigns across multiple platforms with different approval criteria.
+  </Card>
+  <Card title="Brand Filter" icon="building">
+    Narrow the list to products from a specific brand partner. Supports both Chinese and English brand name search — the filter matches against whichever name fields are populated.
+  </Card>
+  <Card title="Status Filter" icon="circle-check">
+    Filter by review status: **Pending**, **Approved**, **Rejected**, or **Expired**. The "Expired" filter surfaces products whose availability window has closed without a review decision — useful for backlog audits.
+  </Card>
+</CardGroup>
+
+You can combine multiple filters simultaneously. The active filter state persists within your session, so navigating away and returning keeps your current filter configuration intact. Clear all filters using the **Reset** button in the toolbar to return to the full unfiltered list.

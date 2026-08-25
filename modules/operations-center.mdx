@@ -1,0 +1,64 @@
+---
+title: "Operations Center: Monitor and Filter Influencer Activity"
+sidebarTitle: "Operations Center"
+description: "Use the Shejiu Operations Center to track influencer performance, apply multi-select filters, manage available slots, and view 7-day average metrics."
+---
+
+The **Operations Center** (运营中心) provides a real-time dashboard view of influencer performance and slot availability across your creator roster. At a glance, you can see which influencers are trending upward, which slots still have capacity, and how your team's aggregate metrics compare against rolling averages — all in one place, without needing to drill into individual influencer profiles.
+
+## Influencer Filters
+
+Shejiu supports two distinct modes for filtering by influencer, and understanding the difference between them prevents confusion when you switch between modules:
+
+### Global Single-Select (Site-Wide)
+
+The **global influencer selector** is a site-wide control that sets a single active influencer context across Shejiu. When you select an influencer here, other modules — such as Financials and the Selection Library — scope their data to that creator. This is a single-value selector: only one influencer ID is active at a time globally.
+
+### Page-Level Multi-Select (Operations Center Only)
+
+The Operations Center introduces its own **page-level multi-select influencer filter**, which is independent of the global selector. This filter allows you to choose **multiple influencers simultaneously** and view their combined or comparative data within the Operations Center page.
+
+- Selections are sent to the backend via the `influencerDouyinIds` request parameter as a **comma-separated string** of Douyin IDs.
+- **The legacy `filterInfluencerDouyinId` single-value parameter has been retired.** If you have any custom integrations or scripts that call the Operations Center API using `filterInfluencerDouyinId`, update them to use `influencerDouyinIds` instead. The old parameter is no longer processed by the backend.
+
+<Tip>
+  Use the multi-select influencer filter to run side-by-side performance comparisons across your creator roster. Select three to five influencers with similar follower counts and compare their 7-day averages — this surfaces which creators are outperforming their cohort and which may need operational support.
+</Tip>
+
+## Available Slots
+
+The **Available Slots** panel shows how much remaining campaign capacity each influencer or slot category has. Shejiu renders this in a **compact two-column layout**: slot type on the left, remaining count on the right. Displaying slots side-by-side halves the vertical space required and lets you scan the full capacity picture without scrolling.
+
+Common slot categories you will see include:
+
+- Livestream collaboration slots
+- Short-video product review slots
+- Exclusive campaign reservation slots
+
+When a slot reaches zero, it is visually dimmed in the panel to indicate that no additional assignments are possible without freeing up existing commitments.
+
+## 7-Day Averages
+
+All average metrics in the Operations Center are calculated over a **7-day rolling window**. The three core averages displayed are:
+
+| Metric | Chinese Label | What it measures |
+|---|---|---|
+| **Average Revenue** | 7天均金额 | Rolling 7-day average of daily GMV generated |
+| **Average Order Count** | 7天均单量 | Rolling 7-day average of daily completed orders |
+| **Average Performance Score** | 7天均战绩 | Rolling 7-day average of the creator performance rating |
+
+<Note>
+  The Operations Center previously displayed 5-day averages. All four average displays were updated to the 7-day window to align with the Financials module. If you are comparing historical screenshots or exports, account for this change in window length when interpreting any metrics dated before the update.
+</Note>
+
+The 7-day window provides a more stable signal than daily snapshots — a single unusually high or low day has less outsized influence on the displayed figure, making it easier to identify genuine performance trends versus one-off anomalies.
+
+## Tag Filtering
+
+The Operations Center supports **multi-value tag filters** that let you segment influencer data by operational tags (such as tier, content category, or campaign type).
+
+- **Selecting tags:** Click one or more tags in the filter panel. Each selection adds to your active filter set — there is no need to hold a modifier key.
+- **How selections are sent:** Your tag selections are collected as an array on the frontend and converted to a **comma-separated string** before being included in the API query. This means you can filter by as many tags as needed without hitting URL length restrictions.
+- **Clearing tags:** Click a selected tag again to deselect it, or use the **Reset Filters** button to clear all active tag selections at once.
+
+Tag filters combine with the influencer multi-select filter — for example, you can filter to a set of specific influencer Douyin IDs *and* a specific tag to see only that creator subset within a given category.

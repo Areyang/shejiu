@@ -1,0 +1,122 @@
+---
+title: "Shejiu Frontend Changelog and Release Notes"
+sidebarTitle: "Changelog"
+description: "Track all Shejiu frontend changes by date. Includes module tags, affected files, change descriptions, and verification steps for each update."
+---
+
+This changelog records all frontend changes to the Shejiu platform (Vue 2 + Element UI). Entries are ordered newest-first with module tags and full file references so you can trace exactly what changed, why it changed, and how to verify the result.
+
+<Note>
+  Every frontend change must be logged here. See [Development Conventions](/development/conventions#changelog-maintenance) for the required fields each entry must include.
+</Note>
+
+---
+
+<Update label="2026-08-24" tags={["Red Packets"]}>
+  **Red Packet List Row Height Standardized**
+
+  `src/views/wiseman/redpacket/RedpacketListDialog.vue`
+
+  Data rows are now standardized at **96 px** and header rows at **44 px**. The name, denomination, status, progress, and action columns each fill the full row height uniformly. This fixes the inconsistent row heights that previously appeared when a countdown timer rendered across three lines or when an action cell was empty.
+
+  ✅ **Verify:** Open the red packet list drawer and visually confirm that every data row is the same height regardless of whether it contains a countdown timer or an empty action cell.
+</Update>
+
+<Update label="2026-08-24" tags={["Red Packets"]}>
+  **New Red Packet Creation Form**
+
+  `CreateRedpacketDialog.vue`, `createRedpacketFormText.js`
+
+  The new red packet dialog now uses a **"New Red Packet Settings"** form layout. The form is divided into four sections:
+
+  1. Denomination & quantity (including total amount for the batch)
+  2. Basic information
+  3. Distribution parameters
+  4. Automated task toggle
+
+  The title area has increased top padding to improve visual breathing room.
+</Update>
+
+---
+
+<Update label="2026-08-22" tags={["Red Packets"]}>
+  **Red Packet Dialog Converted to Drawer**
+
+  `src/views/wiseman/redpacket/index.vue`
+
+  The red packet cell popup has been converted to a right-side drawer using `el-drawer`. This also fixes a Chinese character encoding issue in `RedpacketListDialog`.
+
+  <Note>
+    Only the red packet column uses this new drawer. All other feature columns continue to use the original popup dialog pattern.
+  </Note>
+</Update>
+
+---
+
+<Update label="2026-08-21" tags={["Open-Sea Products"]}>
+  **Line Chart Disappearance Fix**
+
+  `src/views/highseas/seasProduct/seasList.vue`
+
+  Expanding or collapsing rows triggered `doLayout` and a brand cell merging reflow. This caused ECharts containers to be rebuilt, but the previous code only re-initialised sub-table charts — not the main table charts — leaving some charts blank.
+
+  **Fix:** After the layout stabilises, both `initAllCharts` and `initSubCharts` are now called uniformly, ensuring every chart container is correctly re-initialised regardless of which row was toggled.
+</Update>
+
+<Update label="2026-08-21" tags={["Open-Sea Products"]}>
+  **Priority Pin Badge + Refresh Count Tooltip**
+
+  - When `handlePriorityPinned == 1`, a red **"Pinned"** badge now appears in the brand column. The field is preserved during row flattening so the badge persists across expand/collapse cycles.
+  - The manual refresh button now shows a hover tooltip estimating remaining refreshes for the day, calculated as `ceil(remaining_brands_today / 30)` — for example, 62 remaining brands yields approximately 3 refreshes.
+  - The **"All"** platform view no longer re-sorts rows on the frontend by `brandId + brandRound`. The server-side ordering from the API response is preserved as-is.
+</Update>
+
+---
+
+<Update label="2026-08-20" tags={["Financials", "Operations Center"]}>
+  **5-Day Average Changed to 7-Day Average**
+
+  Four financial detail pages updated: `financialDetails`, `Company`, `Fluencer`, `Selector`.
+
+  All average metric labels have been updated from "5-day" to **"7-day average revenue / order count / performance score"**.
+
+  Operations Center has been synced with the same change:
+  - Averages updated to 7-day across all displayed metrics
+  - Remaining slots display changed to a compact two-column layout
+  - Tag filter changed from single-select to **multi-select array**; the selected values are converted to a comma-separated string before being sent in the query request
+</Update>
+
+<Update label="2026-08-20" tags={["Product Edit"]}>
+  **Subsidy Input Field Styling**
+
+  10 `ProductEditDialog.vue` files updated:
+  `operation/center`, `under`, `product/fail`, `info`, `product`, `productSelectionDatabase`, `productTemp`, `reviewInterface`, `reviewInterfacefinal`, `reviewInterfaceing`
+
+  A new `subsidy-input` CSS class has been applied across all ten dialogs, providing tighter horizontal padding and a smaller font size for the subsidy input field to improve visual consistency.
+</Update>
+
+---
+
+<Update label="2026-08-18" tags={["Operations Center"]}>
+  **Influencer Multi-Select Filter**
+
+  `src/views/operation/center/index.vue`
+
+  A new page-level **multi-select influencer filter** has been added, separate from the existing global single-select influencer selector. This allows operators to filter the operations center view by multiple influencers simultaneously.
+
+  - Request parameter changed from `filterInfluencerDouyinId` (single value) to `influencerDouyinIds` (comma-separated string of multiple IDs)
+
+  <Note>
+    Logic related to `listTopYesterdayProfitForMonitor` has been temporarily commented out and will be re-enabled in a follow-up update.
+  </Note>
+</Update>
+
+---
+
+<Update label="2026-08-17 / 2026-08-15" tags={["Selection Library", "Brand Display"]}>
+  **Countdown Logic, Brand Display Rules, and Review Layout**
+
+  - **Countdown logic:** Countdown intervals now use `lockTime` as the start time and `expireTime` / `expiretime` as the end time, with case-insensitive field handling to accommodate API responses that return the field in lowercase.
+  - **Brand display rule:** If only one of the English or Chinese brand names has a value, display that value alone. If both are set, display the English name first followed by a `/` separator and the Chinese name (e.g. `BrandEnglish / 品牌中文`).
+  - **Review action bar layout:** The bottom action bar in the review interface has been changed to a `space-between` flex layout, anchoring the **"Approve"** button to the right edge of the bar.
+</Update>

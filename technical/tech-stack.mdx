@@ -1,0 +1,67 @@
+---
+title: "Shejiu Technology Stack and Infrastructure Overview"
+sidebarTitle: "Tech Stack"
+description: "Shejiu is built on Java Spring Boot with a Vue 2 frontend and ADB MySQL columnar storage. Learn about the key technology choices and constraints."
+---
+
+Shejiu's technology stack is designed for high-throughput e-commerce data processing across the Baiying influencer ecosystem. This page describes the key technologies powering the platform and the important constraints you need to be aware of as an operator — particularly around database compatibility, which directly affects how you write queries and design schema changes.
+
+## Backend
+
+Shejiu's server-side runtime is built on the following components:
+
+| Component | Technology |
+|---|---|
+| Application framework | Java Spring Boot |
+| ORM / SQL mapping | MyBatis |
+| Build system | Maven |
+| Primary database | ADB MySQL (columnar storage) |
+
+Spring Boot handles the HTTP layer and dependency injection. MyBatis provides explicit SQL mapping — queries are written directly rather than generated, which gives you full control over query shape and is important when working within ADB MySQL's constraints (see below).
+
+## Frontend
+
+The browser client is built on Vue 2 with a component library and integrated charting:
+
+| Component | Technology |
+|---|---|
+| Framework | Vue 2 (Options API) |
+| Component library | Element UI |
+| Data visualization | ECharts |
+
+All UI components use Vue 2's Options API. If you are adding new components or modifying existing ones, follow the same pattern — do not mix in Composition API syntax, as Vue 2 does not support it natively without additional plugins.
+
+## Database: ADB MySQL Columnar Storage
+
+Shejiu uses ADB MySQL in columnar storage mode, which is optimized for analytical read queries across large datasets — the kind of aggregation-heavy workloads that power the Operations Center dashboards and financial detail views. Columnar storage physically organizes data by column rather than by row, which dramatically reduces I/O for queries that scan a subset of columns across millions of rows.
+
+However, columnar storage comes with meaningful SQL compatibility restrictions that you must respect when writing migrations, stored logic, or ad-hoc queries.
+
+<Warning>
+  **ADB MySQL columnar storage does NOT support the following:**
+
+  - `TRIGGER` — do not create database-level triggers; implement side effects in application logic instead
+  - `PROCEDURE` — stored procedures are not available; move procedural logic into the Java service layer
+  - **Compound indexes** — multi-column indexes are not supported; design queries to use single-column indexes
+  - **Correlated subqueries** — these return error code **9001**; rewrite as JOINs or use a derived table
+  - **CTEs** (`WITH` clauses) — Common Table Expressions are not supported; flatten them into subqueries or temporary tables
+</Warning>
+
+When you encounter error code `9001`, the cause is almost always a correlated subquery. Rewrite the query to eliminate the correlated reference before re-running it.
+
+## Data Visualization
+
+ECharts charts are embedded directly within list views, giving operators inline trend analysis without navigating to a separate reporting screen. Each chart instance is bound to the surrounding table's data scope.
+
+One important behaviour to be aware of: when a table's layout changes — for example, when you expand or collapse a row group — ECharts triggers a **full chart re-initialization** rather than an incremental update. This is intentional and ensures chart dimensions recalculate correctly after DOM reflow. You may see a brief re-render flash on expand/collapse; this is expected and not an error.
+
+## Module Quick Links
+
+<CardGroup cols={2}>
+  <Card title="Open-Sea Products" icon="box" href="/modules/open-sea-products">
+    Manage the public product pool, selection criteria, and listing lifecycle for open-sea inventory.
+  </Card>
+  <Card title="Operations Center" icon="chart-line" href="/modules/operations-center">
+    Monitor campaign performance, influencer activity, and sales analytics across the Baiying ecosystem.
+  </Card>
+</CardGroup>

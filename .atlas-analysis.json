@@ -1,0 +1,69 @@
+{
+  "projectType": "saas",
+  "projectName": "Shejiu",
+  "projectDescription": "Shejiu is a backend management system for the Baiying influencer e-commerce ecosystem, covering product management, selection library, operations center, financial details, and red packet distribution.",
+  "theme": "luma",
+  "primaryColor": "#1be49c",
+  "lightColor": "#0c8c5c",
+  "darkColor": "#0c0c0c",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Modules",
+            "pages": [
+              "modules/open-sea-products",
+              "modules/selection-library",
+              "modules/operations-center",
+              "modules/financials",
+              "modules/red-packets"
+            ]
+          },
+          {
+            "group": "Technical Solutions",
+            "pages": [
+              "technical/captcha-automation",
+              "technical/tech-stack"
+            ]
+          },
+          {
+            "group": "Development",
+            "pages": [
+              "development/conventions",
+              "development/changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Open-sea product management with brand grouping and priority pinning",
+    "Selection library with countdown logic and brand display rules",
+    "Operations center with influencer multi-select filtering",
+    "Financial details across company, influencer, and selector views",
+    "Red packet creation, listing, and automated task management",
+    "Captcha automation via CDP + Qwen3.7 Plus AI recognition",
+    "ECharts-based data visualization with layout stability fixes",
+    "ADB MySQL columnar storage with specific constraint awareness"
+  ],
+  "publicApiSurface": [
+    "POST /captcha_alert — trigger captcha solving task",
+    "Captcha solver: CDP port mapping (Baiying: 9340+index, Taobao: 9335 fixed)",
+    "Qwen3.7 Plus image recognition API (returns instruction, grid, targets)",
+    "influencerDouyinIds query parameter (comma-separated) for operations center filtering",
+    "filterInfluencerDouyinId (legacy, replaced by influencerDouyinIds)",
+    "lockTime / expireTime / expiretime countdown fields",
+    "handlePriorityPinned field for pinned product display",
+    "7-day average financial metrics (金额/单量/战绩)"
+  ]
+}
